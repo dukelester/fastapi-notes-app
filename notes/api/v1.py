@@ -5,6 +5,6 @@ router = APIRouter(prefix="/notes")
 
 
 @router.get("/")
-def get_notes():
+async def get_notes():
     """ The homepage of the notes app """
     return "notes app created!"

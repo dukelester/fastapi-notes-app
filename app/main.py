@@ -23,11 +23,9 @@ def get_application():
 
     return _app
 
-
 app = get_application()
 
-
 @app.get("/")
-def index():
+async def index():
     """ A simple home page view """
     return {"success": " Welcome to the notes application with FastAPI."}
