@@ -3,9 +3,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.config import settings
-
 from notes.api import v1
+from app.core.config import settings
+from .database import SessionLocal
+
+def get_db():
+    """ a function to create the database """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 def get_application():
     """ Get the application """
@@ -20,10 +28,22 @@ def get_application():
         allow_headers=["*"],
     )
     _app.include_router(v1.router)
+    get_db()
 
     return _app
 
 app = get_application()
+
+
+@app.on_event("startup")
+async def startup():
+    """ The database connection established during startup """
+    print("***** Welcome \n database connection success ****")
+
+@app.on_event("shutdown")
+async def shutdown():
+    """ Shutdown the application and disconnet the database """
+    print("***** Database disconnected successfully!! ****")
 
 @app.get("/")
 async def index():

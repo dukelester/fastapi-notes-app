@@ -8,3 +8,18 @@ services:
       - ./:/usr/notes-app/app/
     ports:
       - 8002:8000
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db/notesdb
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=notes@@&app
+      - POSTGRES_DB=notesdb
+
+volumes:
+  postgres_data:
